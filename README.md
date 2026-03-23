@@ -1,21 +1,21 @@
-# Ride-Hailing SQL Analysis Project
-### A beginner-level SQL project modeled on platforms like Ola and Uber
+# Ride-Hailing SQL Analysis
 
 **Author:** Rupak Kumar  
-**Institute:** Indian Institute of Technology Kanpur (M.Tech Transportation Engineering)  
-**Tools:** SQL (SQLite compatible)
+**Institute:** Indian Institute of Technology Kanpur  
+**Programme:** M.Tech, Transportation Engineering  
+**Contact:** rupakk24@iitk.ac.in
 
 ---
 
-## Overview
+## About This Project
 
-This project builds a relational database that simulates how a ride-hailing platform stores and manages its data. The goal was to practice core SQL skills — writing queries, joining tables, and deriving simple business insights from raw records.
+I built this project to strengthen my understanding of relational databases and SQL querying. The dataset is modelled on how a ride-hailing platform such as Ola or Uber might structure its backend data — covering riders, drivers, trip records, payments, and ratings.
 
-The database tracks five things: riders, drivers, trips, payments, and ratings. Using these, I wrote 30 queries that answer practical questions a data analyst might actually face working at a company like Ola or Rapido.
+The queries progress from simple SELECT statements to multi-table JOINs and aggregation-based business analysis. All data is synthetic and was created solely for learning purposes.
 
 ---
 
-## Database Schema
+## Database Structure
 
 ```
 riders ──────┐
@@ -23,65 +23,65 @@ riders ──────┐
 drivers ─────┘         └──── ratings
 ```
 
-| Table | Description | Rows |
-|-------|-------------|------|
-| `riders` | Customer profiles with city and ride history | 15 |
-| `drivers` | Driver profiles with vehicle type and active status | 10 |
-| `trips` | Trip records with fare, distance, and completion status | 25 |
-| `payments` | Payment method and status for each trip | 25 |
-| `ratings` | Rider and driver ratings with feedback text | 22 |
+| Table | Description | Records |
+|-------|-------------|---------|
+| `riders` | Customer details including city and total ride count | 15 |
+| `drivers` | Driver profiles with vehicle category and active status | 10 |
+| `trips` | Individual trip records with fare, distance, and status | 25 |
+| `payments` | Payment mode and transaction status per trip | 25 |
+| `ratings` | Post-trip ratings given to riders and drivers | 22 |
 
 ---
 
-## Files in this Repository
+## Repository Contents
 
 ```
 ride-hailing-sql/
 │
-├── schema.sql     → Creates all 5 tables with constraints and foreign keys
-├── data.sql       → Inserts sample data across all tables
-├── queries.sql    → 30 analysis queries organized into 5 sections
-└── README.md      → This file
+├── schema.sql     → Table definitions with data types and foreign key constraints
+├── data.sql       → Sample records inserted across all five tables
+├── queries.sql    → Thirty SQL queries divided into five sections
+└── README.md      → Project documentation
 ```
 
 ---
 
-## SQL Concepts Covered
+## SQL Topics Covered
 
-**Section 1 — Basic SELECT**  
-Simple retrieval using SELECT, WHERE, and ORDER BY. Filtering trips by status, fare range, and date.
+**Section 1 — Basic Retrieval**  
+Fundamental SELECT statements with WHERE and ORDER BY clauses. Queries filter trips by completion status, fare range, and trip date.
 
-**Section 2 — Filtering and Conditions**  
-Using BETWEEN, AND, OR for range-based and multi-condition filtering.
+**Section 2 — Conditional Filtering**  
+Use of BETWEEN, AND, and OR operators for range-based and compound filtering across multiple columns.
 
-**Section 3 — Aggregate Functions**  
-COUNT, SUM, AVG, MAX, MIN with GROUP BY. Covers revenue by vehicle type, trip counts by city, and payment method breakdown.
+**Section 3 — Aggregation**  
+Application of COUNT, SUM, AVG, MAX, and MIN with GROUP BY. Includes revenue breakdown by vehicle type, trip volume by city, and payment method frequency.
 
-**Section 4 — Joins**  
-INNER JOIN across two and three tables, LEFT JOIN to include drivers with no trips. This is the most important section for real-world SQL work.
+**Section 4 — Table Joins**  
+INNER JOIN applied across two and three tables simultaneously. LEFT JOIN used to retain drivers with no associated trip records. This section forms the core of the analytical work.
 
-**Section 5 — Business Insights**  
-Combining everything above to answer questions like monthly revenue trends, top-performing drivers, city-wise demand, and payment success rates.
+**Section 5 — Business-Level Analysis**  
+Queries that combine joins and aggregation to produce insights on monthly revenue, driver performance, city-wise demand, and payment success rates.
 
 ---
 
 ## Sample Queries
 
-Total revenue from completed trips:
+Total fare collected from completed trips:
 ```sql
 SELECT SUM(fare_amount) AS total_revenue
 FROM trips
 WHERE trip_status = 'Completed';
 ```
 
-Rider names with their trip details:
+Rider names joined with their respective trip details:
 ```sql
 SELECT r.name, t.pickup_location, t.drop_location, t.fare_amount
 FROM riders r
 INNER JOIN trips t ON r.rider_id = t.rider_id;
 ```
 
-Revenue broken down by vehicle type:
+Revenue and trip count grouped by vehicle category:
 ```sql
 SELECT vehicle_type, COUNT(*) AS trips, SUM(fare_amount) AS revenue
 FROM trips
@@ -92,9 +92,9 @@ ORDER BY revenue DESC;
 
 ---
 
-## How to Run
+## Running the Project
 
-**Option 1 — SQLite (Offline)**
+**SQLite via Terminal**
 ```bash
 sqlite3 ride_hailing.db
 .read schema.sql
@@ -102,7 +102,7 @@ sqlite3 ride_hailing.db
 .read queries.sql
 ```
 
-**Option 2 — Google Colab (Online)**
+**Google Colab**
 ```python
 import sqlite3
 import pandas as pd
@@ -119,30 +119,27 @@ df = pd.read_sql_query("SELECT * FROM trips", conn)
 print(df)
 ```
 
-**Option 3 — DB Browser for SQLite**  
-Download from https://sqlitebrowser.org/, create a new database, and run the three SQL files in order from the Execute SQL tab.
+**DB Browser for SQLite**  
+A graphical interface available at https://sqlitebrowser.org/. After installation, create a new database, navigate to the Execute SQL tab, and run the three files in sequence.
 
 ---
 
-## Key Findings
+## Observations from the Data
 
-- SUV trips have the highest average fare at roughly Rs. 785 per ride
-- UPI is the most used payment method across all transactions
-- Riders from Delhi account for the highest trip volume
-- Around 12% of all bookings were cancelled
-- Driver Sunil Mishra has the most total trips completed (870)
-
----
-
-## Skills Demonstrated
-
-`SQL` `SQLite` `Relational Database Design` `JOINs` `Aggregation` `Data Analysis` `Transportation Domain`
+- SUV trips recorded the highest average fare among all vehicle categories at approximately Rs. 785 per trip.
+- UPI was the most frequently used payment method, accounting for nearly 44 percent of all transactions.
+- Riders registered in Delhi generated the highest cumulative trip volume.
+- Approximately 12 percent of all bookings had a cancelled status.
+- Among drivers, Sunil Mishra recorded the highest number of completed trips at 870.
 
 ---
 
-## Contact
+## Technical Skills Used
 
-**Rupak Kumar**  
-M.Tech Transportation Engineering, IIT Kanpur  
-rupakk24@iitk.ac.in  
+`SQL` `SQLite` `Relational Database Design` `JOINs` `Aggregation` `Data Analysis`
+
+---
+
+## Connect
+
 [LinkedIn](your-linkedin-url) | [GitHub](your-github-url)
